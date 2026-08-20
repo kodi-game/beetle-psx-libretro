@@ -3866,6 +3866,16 @@ static bool disk_set_image_index(unsigned index)
     * than letting them flow through to CD_SelectedDisc--. */
    if (num_images == 0)
       return false;
+
+   /* An index of num_images is a request to eject the disc in the libretro API. */
+   if (index == num_images)
+   {
+      eject_state = true;
+      CD_SelectedDisc = -1;
+      DoSimpleCommand(MDFN_MSC_EJECT_DISK);
+      return true;
+   }
+
    if (index >= num_images)
       index = num_images - 1;
 
