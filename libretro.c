@@ -3917,6 +3917,8 @@ int StateAction(StateMem *sm, int load, int data_only)
    if(load)
    {
       ForceEventUpdates(0); // FIXME to work with debugger step mode.
+      if (ret)
+         eject_state = CD_TrayOpen;
    }
 
    return(ret);
