@@ -4214,12 +4214,6 @@ static bool disk_set_image_index(unsigned index)
 {
    unsigned num_images = disk_get_num_images();
 
-   /* The frontend's contract on this callback is that index is in
-    * [0, num_images). Be defensive: refuse impossible values rather
-    * than letting them flow through to CD_SelectedDisc--. */
-   if (num_images == 0)
-      return false;
-
    /* An index of num_images is a request to eject the disc in the libretro API. */
    if (index == num_images)
    {
@@ -4228,6 +4222,9 @@ static bool disk_set_image_index(unsigned index)
       DoSimpleCommand(MDFN_MSC_EJECT_DISK);
       return true;
    }
+
+   if (num_images == 0)
+      return false;
 
    if (index >= num_images)
       index = num_images - 1;
